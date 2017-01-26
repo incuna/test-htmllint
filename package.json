@@ -1,0 +1,17 @@
+{
+  "name": "test-htmllint",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "3.9.1",
+    "gulp-htmllint": "0.0.12"
+  },
+  "scripts": {
+    "test": "gulp htmllint"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}
