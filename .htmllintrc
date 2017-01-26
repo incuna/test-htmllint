@@ -1,0 +1,19 @@
+{
+    "attr-name-style": "dash",
+    "attr-quote-style": "double",
+    "attr-req-value": false,
+    "class-style": "dash",
+    "doctype-first": "smart",
+    "doctype-html5": true,
+    "head-req-title": false,
+    "id-class-style": "dash",
+    "img-req-alt": false,
+    "indent-style": "nonmixed",
+    "indent-width": 4,
+    "indent-width-cont": true,
+    "tag-bans": ["style"],
+    "tag-close": true,
+    "tag-name-lowercase": true,
+    "tag-name-match": true,
+    "tag-self-close": "never"
+}
