@@ -1,0 +1,197 @@
+{% load static wagtailuserbar %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>{% block title %}{% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}{% endblock %}{% block title_suffix %}{% endblock %}</title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {# Global stylesheets #}
+        <link rel="stylesheet" type="text/css" href="{% static 'styles/main.css' %}">
+
+        {% block extra_css %}{% endblock %}
+    </head>
+
+    <body class="{% block body_class %}{% endblock %}">
+
+        <span class="inline-svg-map">
+            {% include 'svg/svg-defs.svg' %}
+        </span>
+
+        {% wagtailuserbar %}
+
+        {% block header %}
+            <header class="header-wrapper">
+                <div class="site-header">
+                    <div class="structure">
+                        <span class="brand-logo"></span>
+
+                        <a class="home-link" href="/">
+                            <span class="site-title">Site title</span>
+                            <span class="site-subtitle">Site subtitle<br>with newline</span>
+                        </a>
+
+                        <a class="subscribe-link" href="/newsletters/subscribe">
+                            <span>Subscribe to<br>newsletter</span>
+                            <svg class="inline-svg subscribe">
+                                <use xlink:href="#svg-subscribe"></use>
+                            </svg>
+                        </a>
+
+                        <button class="menu-button js-toggle">
+                            <svg class="inline-svg menu">
+                                <use xlink:href="#svg-menu"></use>
+                            </svg>
+                            <span>Menu</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="site-sub-header">
+                    <div class="structure">
+                        <nav class="main-nav js-toggle-body">
+                            <ul>
+                                {% for menuitem in request.site.root_page.get_children.live.in_menu %}
+                                    <li>
+                                        <a href="{% pageurl menuitem %}" class="{% if request.get_full_path == menuitem.url %}active{% endif %}">{{ menuitem.title }}</a>
+                                    </li>
+                                {% endfor %}
+                                <li class="nav-subscribe-link">
+                                    <a href="/newsletters/subscribe">
+                                        <span>Subscribe to newsletter</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                        <div class="search-bar-wrapper">
+                            <form action="{% url 'search' %}" method="get">
+                                <input type="text" name="query" value="{{ search_query }}">
+                                <button>Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        {% endblock %}
+
+        {% block breadcrumbs %}
+            <div class="structure">
+                {% if page.get_ancestors|length > 1 %}
+                    <ul class="breadcrumbs">
+                        {% for ancestor in page.get_ancestors %}
+                            {% if not ancestor.is_root %}
+                                <li>
+                                    <a href="{% pageurl ancestor %}">{{ ancestor.title }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        <li>{{ page.title }}</li>
+                    </ul>
+                 {% endif %}
+             </div>
+        {% endblock %}
+
+        {% block pre_content %}{% endblock %}
+
+        <main class="main-content">
+            <div class="structure {% block structure_class %}sidebar-structure{% endblock %}">
+                {% block content %}{% endblock %}
+
+                {% block sidebar %}
+                    <aside class="sidebar">
+
+                        <div class="sidebar-block newsletter-block">
+                            <h4 class="identifier newsletter-identifier">Newsletter/</h4>
+                            <h3>Join our mailing list</h3>
+
+                            <p>Receive all the latest information about upcoming things.</p>
+
+                            <a href="/newsletters/subscribe" class="button">Subscribe</a>
+                        </div>
+
+                        {% block sidebar_extra %}{% endblock %}
+
+                    </aside>
+                {% endblock %}
+            </div>
+        </main>
+
+        {% block footer %}
+            <footer class="footer-main">
+                <div class="structure">
+                    <span class="copyright">&copy; 2017 Example Brand, all rights reserved</span>
+
+                    <nav class="footer-nav">
+                        <ul>
+                            <li>
+                                <a href="/about-us">About Us</a>
+                            </li>
+                            <li>
+                                <a href="/privacy-policy">Privacy Policy</a>
+                            </li>
+                            <li>
+                                <a href="/legal-information">Legal Information</a>
+                            </li>
+                            <li>
+                                <a href="http://www.example.com/">Example.com</a>
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div class="info-wrapper">
+                        <span class="some-info-a">Some info A
+                            {% if page.info_a %}
+                                {{ page.info_a }}
+                            {% else %}
+                                {{ request.site.root_page.specific.site_wide_info_a }}
+                            {% endif %}
+                        </span>
+                        <span class="some-info-b">Some info B
+                            {% if page.info_b %}
+                                {{ page.info_b }}
+                            {% else %}
+                                {{ request.site.root_page.specific.site_wide_info_b }}
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="note">
+                        <span>{{ request.site.root_page.specific.note }}</span>
+                    </div>
+
+                    <a href="" class="some-extra">Some extra</a>
+                </div>
+            </footer>
+        {% endblock footer %}
+
+        <div class="js-modal-warning modal-window">
+            <div class="modal-inner">
+                <h2>You are  leaving this site.</h2>
+                <button class="js-btn-cancel">X</button>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique unde cum aliquid at corporis eligendi delectus porro atque illum placeat, voluptatibus ipsum dolor. Natus consequatur voluptate ex, laboriosam, dolorum nulla!</p>
+                <a class="js-btn-confirm button" href="#">Yes, go to site</a>
+            </div>
+        </div>
+
+        {# Global javascript #}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="{% static 'scripts/toggle.js' %}"></script>
+        <script src="{% static 'scripts/external-link-warning.js' %}"></script>
+
+        {% block extra_js %}{% endblock %}
+
+        {% if debug %}
+            <script src="//localhost:35729/livereload.js"></script>
+        {% endif %}
+
+    </body>
+</html>
