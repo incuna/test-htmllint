@@ -39,4 +39,7 @@ line 106    col 20  value must match the format: dash (E011)
 line 106    col 20  value must match the format: dash (E011)
 line 106    col 20  value must match the format: dash (E011)
 line 106    col 20  value must match the format: dash (E011)
+line 176    col 9   tag is not closed (E042)
 ```
+
+The `</<div>` typo is picked up on line 176. The rest of the errors must be fixed by either adding/changing htmllint rules to adjust for Django templates, or actually be fixed in the html file.
